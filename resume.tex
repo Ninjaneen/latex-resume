@@ -1,0 +1,352 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% Simple LaTeX CV Template %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% NOTE: If you find that it says                                     %%
+%%                                                                    %%
+%%                           1 of ??                                  %%
+%%                                                                    %%
+%% at the bottom of your first page, this means that the AUX file     %%
+%% was not available when you ran LaTeX on this source. Simply RERUN  %%
+%% LaTeX to get the ``??'' replaced with the number of the last page  %%
+%% of the document. The AUX file will be generated on the first run   %%
+%% of LaTeX and used on the second run to fill in all of the          %%
+%% references.                                                        %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Don't like 10pt? Try 11pt or 12pt
+\documentclass[10pt]{article}
+
+% This is a helpful package that puts math inside length specifications
+\usepackage{calc}
+\usepackage{tabularx}
+
+% Simpler bibsection for CV sections
+% (thanks to natbib for inspiration)
+\makeatletter
+\newlength{\bibhang}
+\setlength{\bibhang}{1em}
+\newlength{\bibsep}
+ {\@listi \global\bibsep\itemsep \global\advance\bibsep by\parsep}
+\newenvironment{bibsection}%
+        {\vspace{-\baselineskip}\begin{list}{}{%
+       \setlength{\leftmargin}{\bibhang}%
+       \setlength{\itemindent}{-\leftmargin}%
+       \setlength{\itemsep}{\bibsep}%
+       \setlength{\parsep}{\z@}%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{list}\vspace{-.6\baselineskip}}
+\makeatother
+
+% Layout: Puts the section titles on left side of page
+\reversemarginpar
+
+%
+%         PAPER SIZE, PAGE NUMBER, AND DOCUMENT LAYOUT NOTES:
+%
+% The next \usepackage line changes the layout for CV style section
+% headings as marginal notes. It also sets up the paper size as either
+% letter or A4. By default, letter was used. If A4 paper is desired,
+% comment out the letterpaper lines and uncomment the a4paper lines.
+%
+% As you can see, the margin widths and section title widths can be
+% easily adjusted.
+%
+% ALSO: Notice that the includefoot option can be commented OUT in order
+% to put the PAGE NUMBER *IN* the bottom margin. This will make the
+% effective text area larger.
+%
+% IF YOU WISH TO REMOVE THE ``of LASTPAGE'' next to each page number,
+% see the note about the +LP and -LP lines below. Comment out the +LP
+% and uncomment the -LP.
+%
+% IF YOU WISH TO REMOVE PAGE NUMBERS, be sure that the includefoot line
+% is uncommented and ALSO uncomment the \pagestyle{empty} a few lines
+% below.
+%
+
+%% Use these lines for letter-sized paper
+\usepackage[paper=letterpaper,
+            %includefoot, % Uncomment to put page number above margin
+            marginparwidth=1.2in,     % Length of section titles
+            marginparsep=.05in,       % Space between titles and text
+            margin=0.6in,               % 1 inch margins
+            includemp]{geometry}
+
+%% Use these lines for A4-sized paper
+%\usepackage[paper=a4paper,
+%            %includefoot, % Uncomment to put page number above margin
+%            marginparwidth=30.5mm,    % Length of section titles
+%            marginparsep=1.5mm,       % Space between titles and text
+%            margin=25mm,              % 25mm margins
+%            includemp]{geometry}
+
+%% More layout: Get rid of indenting throughout entire document
+\setlength{\parindent}{0in}
+
+%% This gives us fun enumeration environments. compactitem will be nice.
+\usepackage{paralist}
+
+%% Reference the last page in the page number
+%
+% NOTE: comment the +LP line and uncomment the -LP line to have page
+%       numbers without the ``of ##'' last page reference)
+%
+% NOTE: uncomment the \pagestyle{empty} line to get rid of all page
+%       numbers (make sure includefoot is commented out above)
+%
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+\pagestyle{empty}      % Uncomment this to get rid of page numbers
+\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfootoffset{\marginparsep+\marginparwidth}
+\newlength{\footpageshift}
+\setlength{\footpageshift}
+          {0.5\textwidth+0.5\marginparsep+0.5\marginparwidth-2in}
+\lfoot{\hspace{\footpageshift}%
+       \parbox{4in}{\, \hfill %
+                    \arabic{page} of \protect\pageref*{LastPage} % +LP
+%                    \arabic{page}                               % -LP
+                    \hfill \,}}
+
+% Finally, give us PDF bookmarks
+\usepackage{color,hyperref}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.3}
+\hypersetup{colorlinks,breaklinks,
+            linkcolor=darkblue,urlcolor=darkblue,
+            anchorcolor=darkblue,citecolor=darkblue}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The title (name) with a horizontal rule under it
+%
+% Usage: \makeheading{name}
+%
+% Place at top of document. It should be the first thing.
+\newcommand{\makeheading}[1]%
+        {\hspace*{-\marginparsep minus \marginparwidth}%
+         \begin{minipage}[t]{\textwidth+\marginparwidth+\marginparsep}%
+                {\large \bfseries #1}\\[-0.15\baselineskip]%
+                 \rule{\columnwidth}{1pt}%
+         \end{minipage}}
+
+% The section headings
+%
+% Usage: \section{section name}
+%
+% Follow this section IMMEDIATELY with the first line of the section
+% text. Do not put whitespace in between. That is, do this:
+%
+%       \section{My Information}
+%       Here is my information.
+%
+% and NOT this:
+%
+%       \section{My Information}
+%
+%       Here is my information.
+%
+% Otherwise the top of the section header will not line up with the top
+% of the section. Of course, using a single comment character (%) on
+% empty lines allows for the function of the first example with the
+% readability of the second example.
+\renewcommand{\section}[2]%
+        {\pagebreak[2]\vspace{1.3\baselineskip}%
+         \phantomsection\addcontentsline{toc}{section}{#1}%
+         \hspace{0in}%
+         \marginpar{
+         \raggedright \scshape #1}#2}
+
+% An itemize-style list with lots of space between items
+\newenvironment{outerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1]}{\end{itemize}%
+         \vspace{-.6\baselineskip}}
+
+% An environment IDENTICAL to outerlist that has better pre-list spacing
+% when used as the first thing in a \section
+\newenvironment{lonelist}[1][\enskip\textbullet]%
+        {\vspace{-\baselineskip}\begin{list}{#1}{%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{list}\vspace{-.6\baselineskip}}
+
+% An itemize-style list with little space between items
+\newenvironment{innerlist}[1][\enskip\textbullet]%
+        {\begin{compactitem}[#1]}{\end{compactitem}}
+
+% An environment IDENTICAL to innerlist that has better pre-list spacing
+% when used as the first thing in a \section
+\newenvironment{loneinnerlist}[1][\enskip\textbullet]%
+        {\vspace{-\baselineskip}\begin{compactitem}[#1]}
+        {\end{compactitem}\vspace{-.6\baselineskip}}
+
+% To add some paragraph space between lines.
+% This also tells LaTeX to preferably break a page on one of these gaps
+% if there is a needed pagebreak nearby.
+\newcommand{\blankline}{\quad\pagebreak[2]}
+
+% Uses hyperref to link DOI
+\newcommand\doilink[1]{\href{http://dx.doi.org/#1}{#1}}
+\newcommand\doi[1]{doi:\doilink{#1}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Begin CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\makeheading{Kan Wu \hfill Software Engineer, New Grad}
+
+\section{Contact Information}
+%
+% NOTE: Mind where the & separators and \\ breaks are in the following
+%       table.
+%
+% ALSO: \rcollength is the width of the right column of the table
+%       (adjust it to your liking; default is 1.85in).
+%
+\newlength{\rcollength}\setlength{\rcollength}{2.5in}%
+%
+\begin{tabular}[t]{@{}p{\textwidth-\rcollength}p{\rcollength}}
+Hinman Box 6211 & \textit{Cell:} (603) 277-0535 \\
+Sudikoff Lab 9 Maynard St & 
+  \textit{E-mail:} \href{mailto:wukan@cs.dartmouth.edu}{wukan@cs.dartmouth.edu}\\
+\href{http://www.dartmouth.edu/}{Dartmouth College} & 
+  \textit{WWW:} \href{http://www.cs.dartmouth.edu/~wukan/}{www.cs.dartmouth.edu/{\textasciitilde}wukan/}\\
+Hanover, NH 03755 & \\
+\end{tabular}
+
+\section{Education}
+%
+\href{http://www.dartmouth.edu/}{\textbf{Dartmouth College}},
+Hanover, NH, United States
+\begin{outerlist}
+\item[] M.S.,
+        \href{http://www.cs.dartmouth.edu/}
+             {Computer Science}, September 2012 (expected)
+\end{outerlist}
+
+\blankline
+
+\href{http://ev.buaa.edu.cn/}{\textbf{Beihang University}},
+Beijing, China
+\begin{outerlist}
+\item[] B.Eng., Computer Science and Engineering, June 2010
+\end{outerlist}
+
+\section{Professional Experience}
+%
+\href{http://www.google.com/mobile/google-mobile-app/}{\textbf{Google}}
+Cambridge, MA
+\begin{outerlist}
+\item[] \textit{Software Engineering Intern, Mobile}
+        \hfill \textbf{Oct 2011 to Dec 2011}
+\begin{innerlist}
+\item Develop the stream voice search on iOS Google Search App.
+\item Develop the search by image on iOS Google Search App.
+\item Work on Google Web Server to enable search by image on tablet.
+\end{innerlist}
+\end{outerlist}
+\blankline
+
+\href{http://yelp.com/}{\textbf{Yelp!}}
+San Francisco, CA
+\begin{outerlist}
+\item[] \textit{Software Engineer Intern, Mobile}
+        \hfill \textbf{Jun 2011 to Sept 2011}
+\begin{innerlist}
+\item Developed Yelp mobile app UI on Android and back-end API in Python.
+\item Implemented the features including: 
+    more review highlight, quick tip feedback,
+    search suggest, display menu url,
+    friend list prototype, etc.
+\item Worked on two Hackathon projects, 
+    1. served as a product manager and front-end engineer for a Yelp-based dating site,
+    2. hacked to the Javascript code to implement Yelp Instant.
+\end{innerlist}
+\end{outerlist}
+\blankline
+
+\href{http://www.cs.dartmouth.edu/}{\textbf{Dartmouth Computer Science Department}}
+Hanover, NH 
+\begin{outerlist}
+\item[] \textit{Research Developer for \href{http://greenlite2.cs.dartmouth.edu/}{GreenLite.com}}%
+        \hfill \textbf{Sept 2010 to Jun 2011}
+\begin{innerlist}
+\item Proposed a game-like competition and implemented the UI with Javascript for GreenLite.
+%\item GreenLite is a real-time energy usage feedback system.
+%\item Designed and implemented the features of GreenLite system with PHP and ActionScript.
+\end{innerlist}
+\end{outerlist}
+\blankline
+
+\href{http://jiepang.com/}{\textbf{Jiepang.com}}
+Beijing, China
+\begin{outerlist}
+\item[] \textit{Web Product Engineer}%
+        \hfill \textbf{Jul 2010 to Aug 2010}
+\begin{innerlist}
+\item Jiepang.com, a start-up company, is the 1st-ranking location-based service in China.
+\item Cooperated with product manager and marketing to design and implement novel products.
+\item Developed the product \href{http://jiepang.com/events/invite/}{\textbf{Invitation Friends}}, which broke the daily record of registrated users.
+\item Developed the administration website for inner data management with PHP and Python.
+\end{innerlist}
+\end{outerlist}
+
+\blankline
+
+\href{http://research.microsoft.com/en-us/labs/asia/}{\textbf{Microsoft Research Asia}}
+Beijing, China
+\begin{outerlist}
+
+\item[] \textit{Research Intern for Indoor Trajectory Recognition}
+        \hfill \textbf{Mar 2010 to May 2010}
+\begin{innerlist}
+\item Reviewed the work of Mobile-based Activity Recognition techniques and wrote the proposal for the Indoor Trajectory Recognition based on Compass and G-Sensor. 
+\item Developed the data collection application on the Android platform.
+\end{innerlist}
+
+\item[] \textit{Research Developer Intern for ColorSketch}
+        \hfill \textbf{Mar 2010 to Apr 2010}
+\begin{innerlist}
+\item Responsible for improving the image processing application speed on the Windows Mobile platform from 30s to less then 5s. 
+\end{innerlist}
+
+\item[] \textit{Research Developer Intern for Photo2Search}%
+        \hfill \textbf{Aug 2009 to Feb 2010}
+\begin{innerlist}
+\item Responsible for improving the query speed of the image search on Windows Mobile,
+\item Explored the user scenario for mobile image search app.
+\end{innerlist}
+
+\end{outerlist}
+
+\section{Skills}
+%
+Extensive experience in back-end web/software developing.
+Python, C, PHP
+
+Extremely passion in front-end web developing.
+Javascript, CSS/HTML
+
+Experienced in iOS and Android user interface development.
+
+\blankline
+
+%\begin{tabular*}{0.75\textwidth}{@{\extracolsep{\fill}}ll}
+%Lorie Loeb & Yuancheng Yang \\
+%Research Associate Professor & Co-Founder and Director, Products \\
+%Dartmouth College & Jiepang.com \\
+%lorie.loeb@cs.dartmouth.edu & yuancheng@wozai.cc \\
+%\end{tabular*}
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% End CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
